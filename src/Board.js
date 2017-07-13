@@ -137,15 +137,7 @@
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       var hasConflict = false;
-      // var rowArray = [];
-      // var colObj = [];
-      // for(var key in this.attributes){
-      //   rowArray = this.get(key);
-      //     for (var i = 0; i < rowArray.length; i++){
 
-      //     }
-      //   }
-      // }
       for(var i = 0; i < this.attributes['n']; i++){
         hasConflict = hasConflict || this.hasColConflictAt(i);
       }
@@ -166,10 +158,6 @@
       var rowIndex = 0;
       var majDiagArray = [];
 
-
-        // for(var i = indexAt; i < this.attributes['n'] - indexAt; i++){
-        //   colArray.push(this.attributes[i - indexAt][indexAt]);
-        // }
       if(args < 0){
         rowIndex = -args;
         colIndex = 0;
@@ -178,12 +166,6 @@
       for(var i = 0; i < this.attributes['n'] - Math.abs(args); i++){
         majDiagArray.push(this.attributes[i + rowIndex][i + colIndex]);
       }
-      // } else {
-      //     for(var i = 0; i < this.attributes['n'] + indexAt; i++){
-      //       colArray.push(this.attributes[i + indexAt][i]);
-      //     }
-
-
 
       for(var i = 0; i < majDiagArray.length; i++) {
         if(majDiagArray[i] === 1) {
@@ -224,24 +206,15 @@
       var rowIndex = 0;
       var minDiagArray = [];
 
-
-        // for(var i = indexAt; i < this.attributes['n'] - indexAt; i++){
-        //   colArray.push(this.attributes[i - indexAt][indexAt]);
-        // }
-      if(args >= this.attributes['n']){
-        rowIndex = -args;
-        colIndex = 0;
+      if(args < this.attributes['n'] ){
+        for(var i = 0; i <= args; i++){
+          minDiagArray.push(this.attributes[args - i][i]);
+        }
+      } else {
+        for(var i = args - this.attributes['n'] + 1; i < this.attributes['n']; i++){
+          minDiagArray.push(this.attributes[this.attributes['n'] - i][i])
+        }
       }
-
-      for(var i = 0; i < this.attributes['n'] - Math.abs(args); i++){
-        minDiagArray.push(this.attributes[i][colIndex - i]);
-      }
-      // } else {
-      //     for(var i = 0; i < this.attributes['n'] + indexAt; i++){
-      //       colArray.push(this.attributes[i + indexAt][i]);
-      //     }
-
-
 
       for(var i = 0; i < minDiagArray.length; i++) {
         if(minDiagArray[i] === 1) {
