@@ -212,7 +212,7 @@
         }
       } else {
         for(var i = args - this.attributes['n'] + 1; i < this.attributes['n']; i++){
-          minDiagArray.push(this.attributes[this.attributes['n'] - i][i])
+          minDiagArray.push(this.attributes[this.attributes['n'] - i][i + 1])
         }
       }
 
