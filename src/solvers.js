@@ -27,17 +27,9 @@ window.findNRooksSolution = function(n) {
   return arrayOfArrays;
 };
 
-// return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
+
 window.countNRooksSolutions = function(n) {
-  // var matrix = zeroMatrix(n);
 
-  // for(var i = 0; i < n - 1; i++) {
-  //   var decisionTree = [];
-  //   decisionTree.push([new rookNode]);
-  //   for(var i = 1; i < n; i++){
-
-  //   }
-  // }
   var solutionCount = 0;
   var matrix = new Board({n: n});
   var rookAdded = 0;
@@ -67,7 +59,7 @@ window.countNRooksSolutions = function(n) {
       child.data = combinationArray[i]
       node.children.push(child);
     }
-    //node.children = combinationArray.slice();
+
 
     if(depth + 1 !== n){
       for(var i = 0; i < n; i++){
@@ -77,7 +69,7 @@ window.countNRooksSolutions = function(n) {
   }
 
   createTree(0, root);
-  //console.log('testing');
+
 
   var container = [];
   var createBoardAndSolutions = function(node, depth, matrix){
@@ -85,31 +77,12 @@ window.countNRooksSolutions = function(n) {
       container.push(matrix);
     } else {
 
-    matrix.push(node.data);
+      matrix.push(node.data);
 
-    for(var i = 0; i < n; i++){
-      createBoardAndSolutions(node.children[i], depth + 1, matrix.slice());
+      for(var i = 0; i < n; i++){
+        createBoardAndSolutions(node.children[i], depth + 1, matrix.slice());
+      }
     }
-  }
-
-    // for(var i = 0; i < node.data.length; i++) {
-    //   if(node.data[i] === 1) {
-    //     matrix[depth][i] = 1;
-    //   }
-    // }
-
-    // if(depth + 1 !== n){
-    //   for(var i = 0; i < n; i++){
-    //     createBoardAndSolutions(node.children[i], depth + 1, matrix.slice());
-    //   }
-    // } else {
-    //   var board = new Board(matrix);
-    //   if(!board.hasAnyRooksConflicts()) {
-    //     solutionCount++;
-    //   }
-    //   // console.log(JSON.stringify(matrix));
-
-    // }
   }
 
   var theMatrix = [];
@@ -142,12 +115,7 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  if(n === 0) {
-    return 1;
-  }
-  // if(n === 3) {
-  //   return 0;
-  // }
+  var combinationArray = [];
 
   var generateCombination = function(width){
     var rowArr = [];
@@ -188,6 +156,7 @@ window.findNQueensSolution = function(n) {
     if(depth === n){
       var board = new Board(matrix);
       if(!board.hasAnyQueensConflicts()) {
+        console.log("found solution for: " + n)
         return matrix;
       }
     } else {
@@ -200,20 +169,11 @@ window.findNQueensSolution = function(n) {
     }
 
   };
-  var theMatrix = [];
-  var matrixRow = [];
-
-  for(var i = 0; i < n; i++){
-    matrixRow[i] = 0;
-  }
-  for(var i = 0; i < n; i++){
-    theMatrix[i] = matrixRow.slice();
-  }
 
   for(var i = 0; i < root.children.length; i++){
     createBoardAndSolutions(root.children[i], 0, []);
   }
-  console.log(n);
+
   for(var i = 0; i < container.length; i++){
     var board = new Board(container[i]);
     if(!board.hasAnyQueensConflicts()) {
@@ -222,11 +182,10 @@ window.findNQueensSolution = function(n) {
     }
   }
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
 
 
-  return solutionCount / n;
-}
+  return [[]];
+
 
   var generateCombination = function(width){
     var rowArr = [];
@@ -289,19 +248,10 @@ window.findNQueensSolution = function(n) {
   for(var i = 0; i < root.children.length; i++){
     createBoardAndSolutions(root.children[i], 0, []);
   }
-  console.log(n);
-  for(var i = 0; i < container.length; i++){
-    var board = new Board(container[i]);
-    if(!board.hasAnyQueensConflicts()) {
-      console.log(container[i]);
-      solutionCount++;
-    }
-  }
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
 
 
-  return solutionCount / n;
+
+  return [[]];
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
@@ -310,9 +260,9 @@ window.countNQueensSolutions = function(n) {
   if(n === 0) {
     return 1;
   }
-  // if(n === 3) {
-  //   return 0;
-  // }
+
+  var combinationArray = [];
+  var solutionCount = 0;
 
   var generateCombination = function(width){
     var rowArr = [];
@@ -362,15 +312,7 @@ window.countNQueensSolutions = function(n) {
     }
 
   };
-  var theMatrix = [];
-  var matrixRow = [];
 
-  for(var i = 0; i < n; i++){
-    matrixRow[i] = 0;
-  }
-  for(var i = 0; i < n; i++){
-    theMatrix[i] = matrixRow.slice();
-  }
 
   for(var i = 0; i < root.children.length; i++){
     createBoardAndSolutions(root.children[i], 0, []);
@@ -388,30 +330,9 @@ window.countNQueensSolutions = function(n) {
 
 
   return solutionCount / n;
-  var solutionCount = 0;
-  var matrix = new Board({n: n});
-  var rookAdded = 0;
-  var combinationArray = [];
-
-
 
 };
 
-// var zeroMatrix = function(n) {
-//   var matrix = [];
-//   var row = [];
-
-//   for(var i = 0; i < n; i++) {
-//     row.push(0);
-//   }
-
-//   for(var i = 0; i < n; i++) {
-//     matrix.push(row.slice()); // why slice?
-//   }
-
-//   return matrix;
-
-// }
 
 var rookNode = function(){
   this.data = null;
