@@ -142,12 +142,6 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-
-};
-
-// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-window.countNQueensSolutions = function(n) {
-
   if(n === 0) {
     return 1;
   }
@@ -155,10 +149,84 @@ window.countNQueensSolutions = function(n) {
   //   return 0;
   // }
 
-  var solutionCount = 0;
-  var matrix = new Board({n: n});
-  var rookAdded = 0;
-  var combinationArray = [];
+  var generateCombination = function(width){
+    var rowArr = [];
+    var index = width;
+    for(var i = 0; i < n; i++) {
+      rowArr.push(0);
+    }
+
+    rowArr[index] = 1;
+    combinationArray.push(rowArr.slice());
+    if(width + 1 < n){
+      generateCombination(width + 1);
+    }
+  }
+
+  generateCombination(0);
+
+  var root = new rookNode();
+
+  var createTree = function(depth, node){
+    for(var i = 0; i < n; i++){
+      var child = new rookNode();
+      child.data = combinationArray[i]
+      node.children.push(child);
+    }
+
+    if(depth + 1 !== n){
+      for(var i = 0; i < n; i++){
+        createTree(depth + 1, node.children[i]);
+      }
+    }
+  }
+
+  createTree(0, root);
+
+  var container = [];
+  var createBoardAndSolutions = function(node, depth, matrix){
+    if(depth === n){
+      var board = new Board(matrix);
+      if(!board.hasAnyQueensConflicts()) {
+        return matrix;
+      }
+    } else {
+
+      matrix.push(node.data);
+
+      for(var i = 0; i < n; i++){
+        createBoardAndSolutions(node.children[i], depth + 1, matrix.slice());
+      }
+    }
+
+  };
+  var theMatrix = [];
+  var matrixRow = [];
+
+  for(var i = 0; i < n; i++){
+    matrixRow[i] = 0;
+  }
+  for(var i = 0; i < n; i++){
+    theMatrix[i] = matrixRow.slice();
+  }
+
+  for(var i = 0; i < root.children.length; i++){
+    createBoardAndSolutions(root.children[i], 0, []);
+  }
+  console.log(n);
+  for(var i = 0; i < container.length; i++){
+    var board = new Board(container[i]);
+    if(!board.hasAnyQueensConflicts()) {
+      console.log(container[i]);
+      solutionCount++;
+    }
+  }
+
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+
+
+  return solutionCount / n;
+}
 
   var generateCombination = function(width){
     var rowArr = [];
@@ -207,13 +275,13 @@ window.countNQueensSolutions = function(n) {
       }
     }
 
-  }
+  };
   var theMatrix = [];
   var matrixRow = [];
 
   for(var i = 0; i < n; i++){
     matrixRow[i] = 0;
-  };
+  }
   for(var i = 0; i < n; i++){
     theMatrix[i] = matrixRow.slice();
   }
@@ -225,7 +293,7 @@ window.countNQueensSolutions = function(n) {
   for(var i = 0; i < container.length; i++){
     var board = new Board(container[i]);
     if(!board.hasAnyQueensConflicts()) {
-      console.log(container[i])
+      console.log(container[i]);
       solutionCount++;
     }
   }
@@ -234,6 +302,97 @@ window.countNQueensSolutions = function(n) {
 
 
   return solutionCount / n;
+};
+
+// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
+window.countNQueensSolutions = function(n) {
+
+  if(n === 0) {
+    return 1;
+  }
+  // if(n === 3) {
+  //   return 0;
+  // }
+
+  var generateCombination = function(width){
+    var rowArr = [];
+    var index = width;
+    for(var i = 0; i < n; i++) {
+      rowArr.push(0);
+    }
+
+    rowArr[index] = 1;
+    combinationArray.push(rowArr.slice());
+    if(width + 1 < n){
+      generateCombination(width + 1);
+    }
+  }
+
+  generateCombination(0);
+
+  var root = new rookNode();
+
+  var createTree = function(depth, node){
+    for(var i = 0; i < n; i++){
+      var child = new rookNode();
+      child.data = combinationArray[i]
+      node.children.push(child);
+    }
+
+    if(depth + 1 !== n){
+      for(var i = 0; i < n; i++){
+        createTree(depth + 1, node.children[i]);
+      }
+    }
+  }
+
+  createTree(0, root);
+
+  var container = [];
+  var createBoardAndSolutions = function(node, depth, matrix){
+    if(depth === n){
+      container.push(matrix);
+    } else {
+
+      matrix.push(node.data);
+
+      for(var i = 0; i < n; i++){
+        createBoardAndSolutions(node.children[i], depth + 1, matrix.slice());
+      }
+    }
+
+  };
+  var theMatrix = [];
+  var matrixRow = [];
+
+  for(var i = 0; i < n; i++){
+    matrixRow[i] = 0;
+  }
+  for(var i = 0; i < n; i++){
+    theMatrix[i] = matrixRow.slice();
+  }
+
+  for(var i = 0; i < root.children.length; i++){
+    createBoardAndSolutions(root.children[i], 0, []);
+  }
+  console.log(n);
+  for(var i = 0; i < container.length; i++){
+    var board = new Board(container[i]);
+    if(!board.hasAnyQueensConflicts()) {
+      console.log(container[i]);
+      solutionCount++;
+    }
+  }
+
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+
+
+  return solutionCount / n;
+  var solutionCount = 0;
+  var matrix = new Board({n: n});
+  var rookAdded = 0;
+  var combinationArray = [];
+
 
 
 };
@@ -257,5 +416,5 @@ window.countNQueensSolutions = function(n) {
 var rookNode = function(){
   this.data = null;
   this.children = [];
-}
+};
 
